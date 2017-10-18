@@ -27,7 +27,7 @@ public:
 	Matrix operator*(int k);
 	void operator*=(int b);
 	int* operator[](int);
-	Matrix pow_object(const Matrix&, int n);
+	Matrix pow(int n);
 	Matrix Matrix::operator*(const Matrix& obj);
 	friend Matrix operator*(int n, Matrix b);
 	//	friend Matrix operator*(Matrix a, Matrix  b);

@@ -9,7 +9,7 @@ int main() {
 		Matrix a(3, 3), t(3, 3), b(3, 3);
 		cin >> b;
 		cout << endl;
-		a = a.pow_object(b, 2);
+		a = b.pow(3);
 		cout << a << endl;
 		cout << a + b << endl;
 		cout << b - a << endl;

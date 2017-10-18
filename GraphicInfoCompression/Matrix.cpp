@@ -172,11 +172,11 @@ Matrix Matrix::operator*(const Matrix& obj) {
 				result[i][j] += mass[i][k] * obj.mass[k][j];
 	return result;
 }
-Matrix Matrix::pow_object(const Matrix& a, int c) {
+Matrix Matrix::pow(int c) {
 	Matrix result(n, m);
-	result = a;
+	result = *this;
 	for (int i = 1; i < c; i++)
-		result = result*a;
+		result = result*(*this);
 	return result;
 }
 int* Matrix::operator[](int index)
