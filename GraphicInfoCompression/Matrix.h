@@ -28,6 +28,7 @@ public:
 	void operator*=(int b);
 	int* operator[](int);
 	Matrix pow(int n);
+	Matrix transponation();
 	Matrix Matrix::operator*(const Matrix& obj);
 	friend Matrix operator*(int n, Matrix b);
 	//	friend Matrix operator*(Matrix a, Matrix  b);

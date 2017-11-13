@@ -163,7 +163,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix& obj) {
 }
 
 Matrix Matrix::operator*(const Matrix& obj) {
-	Matrix result(n, m);
+	Matrix result(n, obj.m);
 	if (m != obj.n)
 		return result;
 	for (int i = 0; i < n; i++)
@@ -177,6 +177,14 @@ Matrix Matrix::pow(int c) {
 	result = *this;
 	for (int i = 1; i < c; i++)
 		result = result*(*this);
+	return result;
+}
+
+Matrix Matrix::transponation() {
+	Matrix result(m, n);
+	for (int i = 0; i < m; i++)
+		for (int j = 0; j < n; j++)
+			result[i][j] = mass[j][i];
 	return result;
 }
 int* Matrix::operator[](int index)
