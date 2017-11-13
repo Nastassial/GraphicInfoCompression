@@ -8,7 +8,7 @@ class Matrix {
 private:
 	int n;
 	int m;
-	int **mass;
+	double **mass;
 public:
 	Matrix();
 	Matrix(int, int);
@@ -26,7 +26,7 @@ public:
 	Matrix operator-(Matrix b);
 	Matrix operator*(int k);
 	void operator*=(int b);
-	int* operator[](int);
+	double* operator[](int);
 	Matrix pow(int n);
 	Matrix Matrix::operator*(const Matrix& obj);
 	friend Matrix operator*(int n, Matrix b);

@@ -9,9 +9,9 @@ void Matrix::show() {
 Matrix::Matrix(int a_n, int a_m) {
 	n = a_n;
 	m = a_m;
-	mass = new int*[n];
+	mass = new double*[n];
 	for (int i = 0; i < n; i++)
-		mass[i] = new int[m];
+		mass[i] = new double[m];
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < m; j++)
 			mass[i][j] = 0;
@@ -30,9 +30,9 @@ Matrix Matrix::operator=(const Matrix& obj) {
 	delete[]mass;	//a=b
 	n = obj.n;
 	m = obj.m;
-	mass = new int*[n];
+	mass = new double*[n];
 	for (int i = 0; i < n; i++)
-		mass[i] = new int[m];
+		mass[i] = new double[m];
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < m; j++)
 			mass[i][j] = obj.mass[i][j];
@@ -41,9 +41,9 @@ Matrix Matrix::operator=(const Matrix& obj) {
 Matrix::Matrix(const Matrix& obj) {
 	n = obj.n;
 	m = obj.m;
-	mass = new int*[n];
+	mass = new double*[n];
 	for (int i = 0; i < n; i++)
-		mass[i] = new int[m];
+		mass[i] = new double[m];
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < m; j++)
 			mass[i][j] = obj.mass[i][j];
@@ -179,7 +179,7 @@ Matrix Matrix::pow(int c) {
 		result = result*(*this);
 	return result;
 }
-int* Matrix::operator[](int index)
+double* Matrix::operator[](int index)
 {
 	return mass[index];
 }
