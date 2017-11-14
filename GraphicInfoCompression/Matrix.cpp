@@ -113,6 +113,14 @@ Matrix operator*(int x, Matrix b) {
 	return result;
 }
 
+Matrix operator*(double x, Matrix b) {
+	Matrix result(b.n, b.m);
+	for (int i = 0; i < b.n; i++)
+		for (int j = 0; j < b.m; j++)
+			result.mass[i][j] = x*b.mass[i][j];
+	return result;
+}
+
 void Matrix::operator*=(int b) {
 	*this = *this * b;
 }
@@ -136,17 +144,7 @@ void Matrix::Input(std::istream& is) {
 		for (int j = 0; j < m; j++)
 			is >> mass[i][j];
 }
-int Matrix::define_of_matrix(int n_1) const
-{
-	int result = 0;
-	switch (n_1)
-	{
-	case 1: result = mass[0][0]; break;
-	case 2: result = mass[0][0] * mass[1][1] - mass[0][1] * mass[1][0]; break;
-	case 3: result = (mass[0][0] * mass[1][1] * mass[2][2] + mass[0][1] * mass[1][2] * mass[2][0] + mass[1][0] * mass[2][1] * mass[0][2]) - (mass[2][0] * mass[1][1] * mass[0][2] + mass[1][0] * mass[0][1] * mass[2][2] + mass[2][1] * mass[1][2] * mass[0][0]); break;
-	}
-	return result;
-}
+
 std::istream& operator>>(std::istream& is, Matrix& obj) {
 	for (int i = 0; i < obj.n; i++)
 		for (int j = 0; j < obj.m; j++)
@@ -163,7 +161,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix& obj) {
 }
 
 Matrix Matrix::operator*(const Matrix& obj) {
-	Matrix result(n, m);
+	Matrix result(n, obj.m);
 	if (m != obj.n)
 		return result;
 	for (int i = 0; i < n; i++)
@@ -172,6 +170,15 @@ Matrix Matrix::operator*(const Matrix& obj) {
 				result[i][j] += mass[i][k] * obj.mass[k][j];
 	return result;
 }
+
+Matrix Matrix::transponation() {
+	Matrix result(m, n);
+	for (int i = 0; i < m; i++)
+		for (int j = 0; j < n; j++)
+			result[i][j] = mass[j][i];
+	return result;
+}
+
 Matrix Matrix::pow(int c) {
 	Matrix result(n, m);
 	result = *this;
@@ -179,6 +186,15 @@ Matrix Matrix::pow(int c) {
 		result = result*(*this);
 	return result;
 }
+
+double Matrix::transform() {
+	double denominator = 0;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+			denominator += mass[i][j] * mass[i][j];
+	return denominator;
+}
+
 double* Matrix::operator[](int index)
 {
 	return mass[index];

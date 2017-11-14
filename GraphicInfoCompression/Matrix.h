@@ -16,7 +16,6 @@ public:
 	Matrix operator=(const Matrix&);
 	~Matrix();
 	void show();
-	int define_of_matrix(int) const;
 	Matrix& operator-(int k);
 	Matrix& operator+(int k);
 	Matrix operator/(int k);
@@ -29,8 +28,10 @@ public:
 	double* operator[](int);
 	Matrix pow(int n);
 	Matrix transponation();
+	double transform();
 	Matrix Matrix::operator*(const Matrix& obj);
 	friend Matrix operator*(int n, Matrix b);
+	friend Matrix operator*(double x, Matrix b);
 	//	friend Matrix operator*(Matrix a, Matrix  b);
 	void Input(std::istream&);
 	friend std::istream& operator>>(std::istream&, Matrix&);

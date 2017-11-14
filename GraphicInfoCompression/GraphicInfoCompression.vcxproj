@@ -87,10 +87,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\opencv\build\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\OpenCV\opencv\build\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\opencv\build\x64\vc14\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\OpenCV\opencv\build\x64\vc14\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world331d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
