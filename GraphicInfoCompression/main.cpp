@@ -11,16 +11,19 @@ int main() {
 	setlocale(LC_ALL, "");
 
 	Mat img = imread("lena.jpg");
+
 	int n, m, p;
 	double e;
 	double Eq = 0, E = 0;
+
 	cout << "¬ведите n:" << endl;
 	cin >> n;
 	cout << "¬ведите m:" << endl;
 	cin >> m;
-	int numberOfSegments = (img.rows * img.cols) / (n*m); //L
-	int vectorSize = n*m * 3;
-	int numberOFSegmentInRow = img.cols / m;
+
+	int numberOfSegments = (img.rows * img.cols) / (n*m);		 //L
+	int vectorSize = n*m * 3;									 //N
+
 	while (true)
 	{
 		cout << "¬ведите p (не больше числа " << vectorSize * 2 << "):" << endl;
@@ -33,57 +36,75 @@ int main() {
 		cin >> e;
 		if (e <= 0.1*p && e > 0) break;
 	}
+
 	Matrix vectorsX(numberOfSegments, vectorSize);
-	vectorsX = createXVectors(img, n, m);
 	Matrix W(vectorSize, p);
+	Matrix Wt(p, vectorSize);
+	Matrix Xt(1, vectorSize);
+	Matrix vecDeltaX(1, vectorSize);
+	Matrix deltaX(numberOfSegments, vectorSize);
+	Matrix vecX(1, vectorSize);
+	Matrix vecY(1, p);
+	Matrix Y(numberOfSegments, p);
+
+	vectorsX = createXVectors(img, n, m);
 	W = createW(vectorSize, p);
 	vectorsX.show();
 	cout << endl << "---- W" << endl << endl;
 	W.show();
-	Matrix Wt(p,vectorSize);
 	Wt = W.transponation();
 	cout << endl << "---- Wt" << endl << endl;
 	Wt.show();
-	Matrix Y(numberOfSegments,p);
-	do															//»—ѕ–ј¬»“№
+		
+	do
 	{
-		Y = vectorsX * W;
-		cout << endl << "---- Y" << endl << endl;
-		Y.show();
-		Matrix Xt(numberOfSegments, vectorSize);
-		Xt = Y * Wt;
-		cout << endl << "---- Xt" << endl << endl;
-		Xt.show();
-		Matrix deltaX(numberOfSegments, vectorSize);
-		deltaX = Xt - vectorsX;
-		cout << endl << "---- deltaX" << endl << endl;
-		deltaX.show();
-		for (int count = 1; count <= numberOfSegments; count++)
+		E = 0;
+		for (int i = 0; i < numberOfSegments; i++)
 		{
-			double alphaY = 1 / Y.transform();
+			for (int j = 0; j < vectorSize; j++)
+			{
+				vecX[0][j] = vectorsX[i][j];
+			}
+			vecY = vecX * W;
+			Xt = vecY * Wt;
+			vecDeltaX = Xt - vecX;
+
+			double alphaY = 1 / vecY.transform();
 			cout << endl << "---- alphaY" << endl << endl;
 			cout << alphaY << endl;
-			Matrix WtCorrection(p, vectorSize);
-			WtCorrection = Wt - alphaY*Y.transponation()*deltaX;
-			cout << endl << "---- WtCorrection" << endl << endl;
-			WtCorrection.show();
-			double alphaX = 1 / vectorsX.transform();
-			cout << endl << "---- alphaX" << endl << endl;
-			cout << alphaX << endl;
-			Matrix Weducation(vectorSize, p);
-			Weducation = W - alphaX*vectorsX.transponation()*deltaX*W;
-			cout << endl << "---- Weducation" << endl << endl;
-			Weducation.show();
-			/*for (int q = 1; q <= numberOfSegments; q++)
-			{
-				for (int i = 1; i <= vectorSize; i++)
-				{
-
-				}
-			}*/
+			Wt = Wt - alphaY*vecY.transponation()*vecDeltaX;
+			double alphaX = 1 / vecX.transform();
+			W = W - alphaX*vecX.transponation()*vecDeltaX*Wt.transponation();
+			cout << "---------" << endl;
+			vecDeltaX.show();
+			cout << "---------" << endl;
+			double t = vecDeltaX.transform();
+			cout << t << endl;
+			cout << "Eq:  	" << vecDeltaX.transform() << endl;
+			E += vecDeltaX.transform();
+			cout << "E:		" << E << endl;
+			system("pause");
 		}
 	} while (E > e);
+
+	for (int i = 0; i < numberOfSegments; i++)
+	{
+		for (int j = 0; j < vectorSize; j++)
+		{
+			vecX[0][j] = vectorsX[i][j];
+		}
+		vecY = vecX * W;
+		Xt = vecY * Wt;
+		for (int j = 0; j < vectorSize; j++)
+		{
+			vectorsX[i][j] = 255 * (Xt[i][j] + 1) / 2;
+		}
+	}
+	cout << "----------------------" << endl;
+	vectorsX.show();
+
 	int compressionIndex = (vectorSize * numberOfSegments) / ((vectorSize + numberOfSegments)*p + 2);
+
 	system("pause");
 	return 0;
 }
