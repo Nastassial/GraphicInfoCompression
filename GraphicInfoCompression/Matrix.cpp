@@ -93,6 +93,7 @@ Matrix Matrix::operator-(Matrix b) {
 		return result;
 	}
 }
+
 Matrix& Matrix::operator+(int k) {
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < m; j++)

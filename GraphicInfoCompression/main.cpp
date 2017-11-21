@@ -26,7 +26,7 @@ int main() {
 
 	while (true)
 	{
-		cout << "¬ведите p (не больше числа " << vectorSize * 2 << "):" << endl;
+		cout << "¬ведите p (от 0 до " << vectorSize * 2 << "):" << endl;
 		cin >> p;
 		if (p <= vectorSize * 2) break;
 	}
@@ -46,6 +46,9 @@ int main() {
 	Matrix vecX(1, vectorSize);
 	Matrix vecY(1, p);
 	Matrix Y(numberOfSegments, p);
+	Matrix Wi(vectorSize, p);
+	Matrix Wti(p, vectorSize);
+	Matrix vecDX(1,vectorSize);
 
 	vectorsX = createXVectors(img, n, m);
 	W = createW(vectorSize, p);
@@ -55,7 +58,7 @@ int main() {
 	Wt = W.transponation();
 	cout << endl << "---- Wt" << endl << endl;
 	Wt.show();
-		
+
 	do
 	{
 		E = 0;
@@ -70,21 +73,24 @@ int main() {
 			vecDeltaX = Xt - vecX;
 
 			double alphaY = 1 / vecY.transform();
-			cout << endl << "---- alphaY" << endl << endl;
-			cout << alphaY << endl;
 			Wt = Wt - alphaY*vecY.transponation()*vecDeltaX;
 			double alphaX = 1 / vecX.transform();
 			W = W - alphaX*vecX.transponation()*vecDeltaX*Wt.transponation();
-			cout << "---------" << endl;
-			vecDeltaX.show();
-			cout << "---------" << endl;
-			double t = vecDeltaX.transform();
-			cout << t << endl;
-			cout << "Eq:  	" << vecDeltaX.transform() << endl;
-			E += vecDeltaX.transform();
-			cout << "E:		" << E << endl;
-			system("pause");
 		}
+		for(int i = 0; i < numberOfSegments; i++)
+		{
+			for (int j = 0; j < vectorSize; j++)
+			{
+				vecX[0][j] = vectorsX[i][j];
+			}
+			vecY = vecX * W;
+			Xt = vecY * Wt;
+			vecDeltaX = Xt - vecX;
+
+			Eq = vecDeltaX.transform();
+			E += Eq;
+		}
+		cout << "------------E" << E << endl;
 	} while (E > e);
 
 	for (int i = 0; i < numberOfSegments; i++)
