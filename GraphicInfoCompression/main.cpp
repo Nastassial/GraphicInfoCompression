@@ -15,6 +15,7 @@ int main() {
 	int n, m, p;
 	double e;
 	double Eq = 0, E = 0;
+	double alphaY = 0, alphaX = 0;
 
 	cout << "¬ведите n:" << endl;
 	cin >> n;
@@ -72,12 +73,12 @@ int main() {
 			Xt = vecY * Wt;
 			vecDeltaX = Xt - vecX;
 
-			double alphaY = 1 / vecY.transform();
+			alphaY = 1 / vecY.transform();
 			Wt = Wt - alphaY*vecY.transponation()*vecDeltaX;
-			double alphaX = 1 / vecX.transform();
+			alphaX = 1 / vecX.transform();
 			W = W - alphaX*vecX.transponation()*vecDeltaX*Wt.transponation();
 		}
-		for(int i = 0; i < numberOfSegments; i++)
+		for (int i = 0; i < numberOfSegments; i++)
 		{
 			for (int j = 0; j < vectorSize; j++)
 			{
@@ -87,10 +88,10 @@ int main() {
 			Xt = vecY * Wt;
 			vecDeltaX = Xt - vecX;
 
-			Eq = vecDeltaX.transform();
-			E += Eq;
+			E += vecDeltaX.transform();
 		}
-		cout << "------------E" << E << endl;
+
+		cout << "------------E " << E << endl;
 	} while (E > e);
 
 	for (int i = 0; i < numberOfSegments; i++)

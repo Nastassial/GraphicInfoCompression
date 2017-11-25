@@ -22,11 +22,19 @@ Matrix::Matrix() {
 	mass = NULL;
 }
 Matrix::~Matrix() {
+	for (int i = 0; i < n; i++)
+	{
+		delete[]mass[i];
+	}
 	delete[]mass;
 }
 Matrix Matrix::operator=(const Matrix& obj) {
 	if (this == &obj)
 		return obj; //a=a; //a.operator=(a); 
+	for (int i = 0; i < n; i++)
+	{
+		delete[]mass[i];
+	}				
 	delete[]mass;	//a=b
 	n = obj.n;
 	m = obj.m;
