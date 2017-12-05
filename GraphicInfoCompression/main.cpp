@@ -1,8 +1,10 @@
-//#include <iostream>
+#include <iostream>
 #include <fstream>
-//#include <opencv2/opencv.hpp>
+#include <opencv2/opencv.hpp>
 #include "Matrix.h"
 #include "Functions.h"
+#include <math.h>
+
 
 using namespace std;
 using namespace cv;
@@ -10,7 +12,7 @@ using namespace cv;
 int main() {
 	setlocale(LC_ALL, "");
 
-	Mat img = imread("lena.jpg");
+	Mat img = imread("flowers.jpg");
 
 	int n, m, p;
 	double e;
@@ -31,13 +33,10 @@ int main() {
 		cin >> p;
 		if (p <= vectorSize * 2) break;
 	}
-	while (true)
-	{
-		cout << "¬ведите e (от 0 до " << 0.1*p << "):" << endl;
-		cin >> e;
-		if (e <= 0.1*p && e > 0) break;
-	}
-
+	
+	cout << "¬ведите e " << endl;
+	cin >> e;
+	
 	Matrix vectorsX(numberOfSegments, vectorSize);
 	Matrix W(vectorSize, p);
 	Matrix Wt(p, vectorSize);
@@ -50,18 +49,22 @@ int main() {
 	Matrix Wi(vectorSize, p);
 	Matrix Wti(p, vectorSize);
 	Matrix vecDX(1,vectorSize);
+	Matrix temp(1,p);
 
 	vectorsX = createXVectors(img, n, m);
 	W = createW(vectorSize, p);
-	vectorsX.show();
-	cout << endl << "---- W" << endl << endl;
-	W.show();
+	//vectorsX.show();
+	//cout << endl << "---- W" << endl << endl;
+	//W.show();
 	Wt = W.transponation();
-	cout << endl << "---- Wt" << endl << endl;
-	Wt.show();
+	//cout << endl << "---- Wt" << endl << endl;
+	//Wt.show();
 
+	//for (int op = 0; op < 200 ; op++)
+	int op = 0;
 	do
 	{
+		op++;
 		E = 0;
 		for (int i = 0; i < numberOfSegments; i++)
 		{
@@ -75,8 +78,12 @@ int main() {
 
 			alphaY = 1 / vecY.transform();
 			Wt = Wt - alphaY*vecY.transponation()*vecDeltaX;
+		
 			alphaX = 1 / vecX.transform();
-			W = W - alphaX*vecX.transponation()*vecDeltaX*Wt.transponation();
+			temp = vecDeltaX*Wt.transponation();
+			W = W - alphaX*vecX.transponation()*temp;
+			//W = W - alphaX*vecX.transponation()*vecDeltaX*Wt.transponation();
+			
 		}
 		for (int i = 0; i < numberOfSegments; i++)
 		{
@@ -91,7 +98,8 @@ int main() {
 			E += vecDeltaX.transform();
 		}
 
-		cout << "------------E " << E << endl;
+		cout << "------------E "<<op<<"  " << E <<endl;
+		//cout << "-----------e" << "   " << e << endl;
 	} while (E > e);
 
 	for (int i = 0; i < numberOfSegments; i++)
@@ -104,11 +112,38 @@ int main() {
 		Xt = vecY * Wt;
 		for (int j = 0; j < vectorSize; j++)
 		{
-			vectorsX[i][j] = 255 * (Xt[i][j] + 1) / 2;
+			vectorsX[i][j] = round(255 * (Xt[0][j] + 1) / 2);
 		}
 	}
+	cout << "----------------W" << endl;
+	//W.show();
 	cout << "----------------------" << endl;
-	vectorsX.show();
+	//vectorsX.show();
+
+	int numberOFSegmentInRow = img.cols / m;
+	int k = 0;
+	int u = 0;
+	for (int i = 0; i < img.rows; i++) {
+		if (i%n == 0 && i != 0) {
+			k++;
+			u = 0;
+		}
+		else if (k != 0) {
+			k -= numberOFSegmentInRow - 1;
+		}
+		for (int j = 0; j < img.cols; j++) {
+			if (j%m == 0 && j != 0) {
+				k++;
+				u -= 3 * m;
+			}
+			img.at<Vec3b>(i, j)[0] = vectorsX[k][u++];
+			img.at<Vec3b>(i, j)[1] = vectorsX[k][u++];
+			img.at<Vec3b>(i, j)[2] = vectorsX[k][u++];
+		}
+	}
+
+
+	imwrite("new_flowers_200.jpg", img);
 
 	int compressionIndex = (vectorSize * numberOfSegments) / ((vectorSize + numberOfSegments)*p + 2);
 

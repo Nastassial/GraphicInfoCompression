@@ -32,6 +32,12 @@ Matrix createXVectors(Mat img ,int n, int m) {
 			vectorsX[k][u++] = round_value(value);
 			value = (double)2 * img.at<Vec3b>(i, j)[2] / 255 - 1;
 			vectorsX[k][u++] = round_value(value);
+			/*value = img.at<Vec3b>(i, j)[0];
+			vectorsX[k][u++] = value;
+			value = img.at<Vec3b>(i, j)[1];
+			vectorsX[k][u++] = value;
+			value = img.at<Vec3b>(i, j)[2];
+			vectorsX[k][u++] = value;*/
 		}
 	}
 	return vectorsX;

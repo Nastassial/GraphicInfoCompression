@@ -1,10 +1,12 @@
 #include "Matrix.h"
 void Matrix::show() {
 	for (int i = 0; i < n; i++) {
+		cout << "------row " << i << endl;
 		for (int j = 0; j < m; j++)
 			cout << mass[i][j] << " ";
 		cout << endl;
 	}
+	cout << "----в ряду " << m << endl;
 }
 Matrix::Matrix(int a_n, int a_m) {
 	n = a_n;
