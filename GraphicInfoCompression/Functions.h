@@ -3,7 +3,7 @@
 #include "Matrix.h"
 
 using namespace cv;
-
+//автор: Сафоненко Карина
 double round_value(double value);
 Matrix createXVectors(Mat img, int n, int m);
 Matrix createW(int vectorSize, int p);

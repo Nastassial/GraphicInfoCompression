@@ -10,6 +10,7 @@ using namespace std;
 using namespace cv;
 
 int main() {
+	//автор: Сафоненко Карина
 	setlocale(LC_ALL, "");
 
 	Mat img = imread("flowers.jpg");
@@ -53,18 +54,13 @@ int main() {
 
 	vectorsX = createXVectors(img, n, m);
 	W = createW(vectorSize, p);
-	//vectorsX.show();
-	//cout << endl << "---- W" << endl << endl;
-	//W.show();
 	Wt = W.transponation();
-	//cout << endl << "---- Wt" << endl << endl;
-	//Wt.show();
-
-	//for (int op = 0; op < 200 ; op++)
+	
+	//автор: Межень Анастасия
 	int op = 0;
 	do
 	{
-		op++;
+		++op;
 		E = 0;
 		for (int i = 0; i < numberOfSegments; i++)
 		{
@@ -72,18 +68,21 @@ int main() {
 			{
 				vecX[0][j] = vectorsX[i][j];
 			}
+			//cout << "---------------"<<endl;
+			//vecX.show();
 			vecY = vecX * W;
+			//cout << "---------------" << endl;
+			//vecY.show();
+			//vecY.show();
 			Xt = vecY * Wt;
 			vecDeltaX = Xt - vecX;
 
-			alphaY = 1 / vecY.transform();
-			Wt = Wt - alphaY*vecY.transponation()*vecDeltaX;
-		
 			alphaX = 1 / vecX.transform();
 			temp = vecDeltaX*Wt.transponation();
 			W = W - alphaX*vecX.transponation()*temp;
-			//W = W - alphaX*vecX.transponation()*vecDeltaX*Wt.transponation();
-			
+
+			alphaY = 1 / vecY.transform();
+			Wt = Wt - alphaY*vecY.transponation()*vecDeltaX;
 		}
 		for (int i = 0; i < numberOfSegments; i++)
 		{
@@ -120,6 +119,7 @@ int main() {
 	cout << "----------------------" << endl;
 	//vectorsX.show();
 
+	//автор: Cафоненко Карина
 	int numberOFSegmentInRow = img.cols / m;
 	int k = 0;
 	int u = 0;
@@ -136,16 +136,23 @@ int main() {
 				k++;
 				u -= 3 * m;
 			}
+			if (vectorsX[k][u] > 255) vectorsX[k][u] = 255;
+			else if (vectorsX[k][u] < 0) vectorsX[k][u] = 0;
 			img.at<Vec3b>(i, j)[0] = vectorsX[k][u++];
+			if (vectorsX[k][u] > 255) vectorsX[k][u] = 255;
+			else if (vectorsX[k][u] < 0) vectorsX[k][u] = 0;
 			img.at<Vec3b>(i, j)[1] = vectorsX[k][u++];
+			if (vectorsX[k][u] > 255) vectorsX[k][u] = 255;
+			else if (vectorsX[k][u] < 0) vectorsX[k][u] = 0;
 			img.at<Vec3b>(i, j)[2] = vectorsX[k][u++];
 		}
 	}
 
 
-	imwrite("new_flowers_200.jpg", img);
+	imwrite("new_picture.jpg", img);
 
 	int compressionIndex = (vectorSize * numberOfSegments) / ((vectorSize + numberOfSegments)*p + 2);
+	cout << "Коэффициент сжатия" << compressionIndex << endl;
 
 	system("pause");
 	return 0;

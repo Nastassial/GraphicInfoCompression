@@ -1,5 +1,6 @@
 #include "Functions.h"
 
+//автор: Сафоненко Карина
 double round_value(double value) {
 	value = ((int)(value * 10 + (value >= 0 ? 0.5 : -0.5)) / 10.0);
 	return value;
@@ -47,7 +48,7 @@ Matrix createW(int vectorSize, int p) {
 	Matrix W(vectorSize, p);
 	for (int i = 0; i < vectorSize ; i++)
 		for (int j = 0; j < p; j++) {
-			W[i][j] = random(-1.0, 1.0);
+			W[i][j] = random(-1.0, 1.0)*0.01;
 		}
 	return W;
 }

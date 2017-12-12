@@ -4,6 +4,7 @@
 using std::cout;
 using std::endl;
 using std::cin;
+//автор: Межень Анастасия
 class Matrix {
 private:
 	int n;

@@ -1,4 +1,5 @@
 #include "Matrix.h"
+//автор: Сафоненко Карина
 void Matrix::show() {
 	for (int i = 0; i < n; i++) {
 		cout << "------row " << i << endl;
@@ -110,6 +111,8 @@ Matrix& Matrix::operator+(int k) {
 			mass[i][j] = mass[i][j] + k;
 	return *this;
 }
+
+//автор: Межень Анастасия
 Matrix& Matrix::operator-(int k) {
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < m; j++)
